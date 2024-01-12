@@ -7,7 +7,7 @@ hero:
   text: "Are\nYou\nReady\nFor PROD?"
   tagline: Welcome home, small flare. Let the darkness consider you
   image:
-    src: /docs/logo.svg
+    src: /docs/03_boilerplates/img/logo.svg
     alt: VitePress
   actions:
     - theme: brand

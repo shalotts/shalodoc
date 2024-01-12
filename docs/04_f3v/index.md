@@ -5,6 +5,10 @@ title: Install
 
 Requires bun. Install dependencies with cli `bun install`
 
+## Auto install
+
+... Not Ready
+
 ## Manual install
 
 Create `vite.config.ts`

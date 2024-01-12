@@ -15,6 +15,7 @@ import { data } from '../../docs/pages.data.mts'
 
 // Component to display pages in a list
 import NavCard from './NavCard.vue';
+import Logo from './assets/logo.svg?url'
 
 // Composable to process route and data and return reactive computed lists of pages
 const { rs, children, parents, siblings, pages } = usePages(useRoute(), data);
@@ -22,6 +23,9 @@ const { rs, children, parents, siblings, pages } = usePages(useRoute(), data);
 
 <template>
   <Layout>
+    <template #home-hero-image>
+      <img :src="Logo" alt="logo" style="z-index: 1">
+    </template>
     <!-- Extending the default layout - put parents list right into the nav bar -->
     <template #nav-bar-title-after>
 

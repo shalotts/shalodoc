@@ -3,11 +3,11 @@
 layout: home
 
 hero:
-  name: "Shalodoc"
-  text: "Are\nYou\nReady\nFor PROD?"
+  name: "Sha.lo.doc"
+  text: "> Are You\n> READY\n> For PROD?"
   tagline: Welcome home, small flare. Let the darkness consider you
   image:
-    src: /logo.svg
+    src: /assets/logo.svg
     alt: VitePress
   actions:
     - theme: brand

@@ -4,23 +4,31 @@ layout: home
 
 hero:
   name: "Shalodoc"
-  text: "Shalotts doc"
-  tagline: Elysia [vike] with Vue Support
+  text: "Are\nYou\nReady\nFor PROD?"
+  tagline: Welcome home, small flare. Let the darkness consider you
+  image:
+    src: /docs/logo.svg
+    alt: VitePress
   actions:
     - theme: brand
       text: Docs
-      link: /docs/index
+      link: /docs/02_philosophy/index.md
     - theme: alt
-      text: Elysia
-      link: https://elysiajs.com
+      text: Fastify
+      link: https://fastify.dev
     - theme: alt
       text: Vike
       link: https://vike.dev
+    - theme: alt
+      text: UnJS
+      link: https://unjs.io
+    - theme: alt
+      text: Fanatics
+      link: https://evilmartians.com/opensource?skills=javascript
 
 features:
-  - title: Elysia framework
-    details: Based on elysia framework. Works on Bun
+  - title: F3V boilerplate
+    details: Based on fastify framework with Vue on front.
   - title: Vike middleware
-    details: Vite for development
+    details: Use vite plugin for server renderer.
 ---
-

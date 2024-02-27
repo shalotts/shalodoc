@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Shalodoc",
+  title: "Shalo.DOCS",
   description: "Shalotts doc",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config

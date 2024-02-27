@@ -3,16 +3,16 @@
 layout: home
 
 hero:
-  name: "Sha.lo.doc"
+  name: "Shalo.DOCS"
   text: "> Are You\n> READY\n> For PROD?"
-  tagline: Welcome home, small flare. Let the darkness consider you
+  tagline: Simply create internal infrastructure for web app development.
   image:
     src: /assets/logo.svg
     alt: VitePress
   actions:
     - theme: brand
       text: Docs
-      link: /docs/02_philosophy/index.md
+      link: /docs/01_introduction/index.md
     - theme: alt
       text: Fastify
       link: https://fastify.dev

@@ -2,10 +2,11 @@
 
 // Default theme layout to extend
 import DefaultTheme from 'vitepress/theme'
+
 const { Layout } = DefaultTheme
 
 // Composables to use
-import { usePages, cleanLink, getPages } from 'vitepress-pages';
+import { usePages, cleanLink, getPages } from 'vitepress-pages'
 
 // The way to react to route changes
 import { useRoute } from 'vitepress'
@@ -14,11 +15,23 @@ import { useRoute } from 'vitepress'
 import { data } from '../../docs/pages.data.mts'
 
 // Component to display pages in a list
-import NavCard from './NavCard.vue';
+import NavCard from './NavCard.vue'
 import Logo from './assets/logo.svg?url'
+import { computed } from 'vue'
+import SideMenu from './SideMenu.vue'
 
+const route = useRoute()
 // Composable to process route and data and return reactive computed lists of pages
-const { rs, children, parents, siblings, pages } = usePages(useRoute(), data);
+const { rs, children, parents, siblings, pages } = usePages(route, data)
+
+const separatedPages = computed(() => {
+  const activePageIndex = pages.value['/docs/'].findIndex(page => page.url === route.path) + 1
+  console.log(activePageIndex)
+  return {
+    top: pages.value['/docs/'].slice(0, activePageIndex),
+    bottom: pages.value['/docs/'].slice(activePageIndex + 1)
+  }
+})
 </script>
 
 <template>
@@ -37,17 +50,11 @@ const { rs, children, parents, siblings, pages } = usePages(useRoute(), data);
     </template>
 
     <template #aside-top>
-      <nav class="side-menu">
-        <template v-for="(page, index) in pages['/docs/']">
-          <span v-if="pages['/docs/'][index - 1]?.frontmatter.parent !== page?.frontmatter.parent" class="side-menu-parent">
-            # {{ page?.frontmatter.parent}}
-          </span>
-          <a :href="page.url" class="side-menu-link">
-            {{ page.frontmatter.title || page.url.split('/').pop().replace('.html', '') }}
-          </a>
-        </template>
+      <SideMenu :pages="separatedPages.top" :has-last-active="true" />
+    </template>
 
-      </nav>
+    <template #aside-bottom>
+      <SideMenu :pages="separatedPages.bottom"/>
     </template>
 
     <!-- This block goes right after the page text -->
@@ -73,21 +80,5 @@ const { rs, children, parents, siblings, pages } = usePages(useRoute(), data);
 </template>
 
 <style>
-.side-menu {
-  display: flex;
-  flex-direction: column;
-}
-.side-menu-parent {
-  margin-bottom: 0.5em;
-  color: var(--vp-c-danger-1);
-}
-.side-menu-link {
-  margin-bottom: 0.5em;
-  color: var(--vp-c-text-1);
-  transition: color 300ms ease-in-out;
-}
 
-.side-menu-link:hover {
-  color: var(--vp-c-brand-1);
-}
 </style>

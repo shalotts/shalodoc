@@ -1,7 +1,8 @@
 {
   "dependencies": {},
   "scripts": {
-    "dev": "bun vitepress"
+    "dev": "bun vitepress",
+    "lint": "bunx cspell docs/**/*.md"
   },
   "devDependencies": {
     "vite-plugin-pages": "^0.32.0",

@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  wiki:
+    image: ghcr.io/requarks/wiki:2
+    restart: unless-stopped
+    ports:
+      - "3010:3000"
+    environment:
+      DB_TYPE: postgres
+      DB_HOST: postgresql
+      DB_PORT: 5432
+      DB_USER: ${PG_USER}
+      DB_PASS: ${PG_PASS}
+      DB_NAME: wiki
+    env_file:
+      - stack.env
+    networks:
+      - intra_net
+    external_links:
+      - postgresql:postgresql
+
+networks:
+  intra_net:
+    external: true

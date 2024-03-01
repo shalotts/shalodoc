@@ -63,7 +63,7 @@ services:
 ## Entrypoints
 
 Некоторые контейнеры позволяют пробрасывать файлы для инициализации.
-В случае если нету entrypoint используйте `command: "Ваша баш команда"`, но в этом случае 
+В случае если нету [entrypoint](https://stackoverflow.com/questions/52942913/docker-compose-docker-entrypoint) используйте `command: "Ваша баш команда"`, но в этом случае 
 команда будет срабатывать всегда при перезапуске контейнера, используйте [баш проверки](https://sentry.io/answers/determine-whether-a-file-exists-or-not-in-bash/)
 
 ```yaml
@@ -72,4 +72,12 @@ services:
 
 ```
 
-У `postgress` можно заметить volume для
+У `postgress` можно заметить volume для создания стартовой точки. Если посмотретить доки она 
+рассчитана на `sh` файл или `sql`. Я положил `sql` файл который создает пользователя docker с 
+правами на работу с базой `intra`, необходимой для внутренних ресурсов. Чтобы в portainer 
+volume добавить файлы, читайте в спойлере про [docker agent](/docs/02_devops/portainer.html)
+
+::: warning
+Обратите внимание на название volume после создание стэка. Контейнеры имеют собственную привязку к 
+volume!
+:::

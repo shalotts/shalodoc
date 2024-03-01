@@ -31,9 +31,42 @@ sudo docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -
 дальнейшие действия с докер выполняем внутри portainer, т.к. создает собственные конфиги 
 несовместимые с консольной версией.
 
+::: details Docker-Compose для portainer
+Скачать `wget https://docs.shalotts.site/assets/docker/portainer/docker-compose.yml`
 
+<img height="600" src="https://content.gitbook.com/content/tLcRoAdw9BYwwpba4ZAD/blobs/6tUkFjXix8CjS7IfxrS8/2.18-environments-add.gif" 
+title="env" width="600"/>
+Обратите внимание мы используем agent для получения возможности управлять файлами в volume
+После настройки `portainer` вы должны добавить в окружение (enviroments->add enviroment-> 
+Environment address: agent:9001)
+Далее вы работаете внутри окружение `agent`, чтобы видет кнопку browse. [Читать доку](https://docs.portainer.io/admin/environments/add/docker/agent)
+<img height="600" src="https://content.gitbook.com/content/tLcRoAdw9BYwwpba4ZAD/blobs/IwkpiopH86XACsJnv88x/2.15-docker_volumes_volumes.png" width="600"/>
+```yaml
+version: "3.4"
+services:
+  agent:
+    image: portainer/agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
 
-*P.S. Не путайте docker-compose swarm (native docker-compose) с docker-compose plugin. Swarm 
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    command: -H tcp://agent:9001 --tlsskipverify
+    environment:
+      - TZ=Europe/Moscow
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /opt/portainer/portainer_data:/data
+    ports:
+      - "8000:8000"
+      - "9443:9443"
+    restart: always
+```
+:::
+
+*P.S. Не путайте docker-compose swarm с docker-compose plugin. Swarm 
 технология 
 крайне нестабильна и устарела, из-за разных версий yaml конфигов, превращает адаптацию конфигов в 
 танцы с бубном. Стэки на сварм часто падают и не работает с внешним хранилищем NFS*
@@ -62,5 +95,6 @@ services:
 
 ::: warning
 Обратите внимание! Для большинства сборок стоит использовать alpine linux (см. содержимое 
-dockerfile), т.к. он заметно легче debian, но есть исключения, к примеру с [питоном](https://habr.com/ru/articles/486202/)
+dockerfile или на тэг с версией контейнера), т.к. он заметно легче debian, но есть исключения, к 
+примеру с [питоном](https://habr.com/ru/articles/486202/)
 :::

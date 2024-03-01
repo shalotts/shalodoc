@@ -18,7 +18,7 @@ services:
       - stack.env
     volumes:
       - postgres:/var/lib/postgresql/data
-      - ./infra/postgres:/docker-entrypoint-initdb.d
+      - entry_db:/docker-entrypoint-initdb.d
 
   redis:
     image: redis:alpine
@@ -51,8 +51,8 @@ services:
       - ./media:/media
       - ./custom-templates:/templates
     ports:
-      - "${COMPOSE_PORT_HTTP:-7000}:7000"
-      - "${COMPOSE_PORT_HTTPS:-7443}:7443"
+      - "${COMPOSE_PORT_HTTP:-9000}:9000"
+      - "${COMPOSE_PORT_HTTPS:-9443}:9443"
     depends_on:
       - postgresql
       - redis
@@ -86,6 +86,8 @@ services:
       - redis
 
 volumes:
+  entry_db:
+    driver: local
   postgres:
     driver: local
   database:

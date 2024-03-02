@@ -1,13 +1,14 @@
 import { createContentLoader, defineConfig, useRoute } from 'vitepress';
 import { fileURLToPath, URL } from 'node:url'
 // https://vitepress.dev/reference/site-config
+
 export default defineConfig({
   title: "Shalo.DOCS",
   description: "Shalotts doc",
   cleanUrls: true,
   themeConfig: {
     search: {
-      provider: 'algolia',
+      provider: 'local',
       options: {
         appId: process.env.VITE_APP_ID,
         apiKey: process.env.VITE_API_KEY,

@@ -6,6 +6,14 @@ export default defineConfig({
   description: "Shalotts doc",
   cleanUrls: true,
   themeConfig: {
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: process.env.VITE_APP_ID,
+        apiKey: process.env.VITE_API_KEY,
+        indexName: process.env.VITE_APP_INDEX
+      }
+    },
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },

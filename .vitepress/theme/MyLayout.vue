@@ -28,6 +28,12 @@ const { rs, children, parents, siblings, pages } = usePages(route, data)
       <img :src="Logo" alt="logo" style="z-index: 1">
     </template>
 
+    <template #nav-bar-content-after>
+      <a href="https://algolia.com" target="_blank">
+        <img class="algolia" src="https://res.cloudinary.com/dr5gcup5n/image/upload/v1709389302/shalodoc/zdhoyhsodtlw4nxtlzbe.svg" alt="algolia">
+      </a>
+    </template>
+
     <template #doc-after>
       <!-- Children list -->
       <nav id="children" class="grid">
@@ -56,9 +62,34 @@ const { rs, children, parents, siblings, pages } = usePages(route, data)
   z-index: 10;
 }
 
+.image-container {
+  display: flex;
+}
+
+.main {
+  backdrop-filter: blur(100px);
+}
+
+.algolia {
+  padding-left: 10px;
+  display: block;
+  width: auto;
+  height: 20px;
+  opacity: 0.5;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.algolia:hover {
+  opacity: 1;
+}
+
 @media (min-width: 960px) {
   html {
     overflow-y: scroll;
   }
+  .main {
+    backdrop-filter: none;
+  }
+
 }
 </style>

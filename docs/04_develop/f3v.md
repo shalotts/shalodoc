@@ -9,7 +9,6 @@ New features available in 0.30.48 [git](https://github.com/shalotts/shalotts)
 
 # F3V boilerplate
 
-
 Requires bun. Install dependencies with cli `bun install`
 
 ## Auto install
@@ -18,8 +17,8 @@ Requires bun. Install dependencies with cli `bun install`
 
 ## Manual install
 
-
 ::: details Create `vite.config.ts`
+
 ```typescript
 import { defineConfig } from 'vite';
 import type { UserConfig } from 'vite';
@@ -67,9 +66,11 @@ const myConfig = {
 
 export default defineConfig(defu(defaultViteF3vConfig, myConfig));
 ```
+
 :::
 
 ::: details Create `sha.config.ts` file in root directory.
+
 ```typescript
 import { defineConfig, defaultConfig, listen } from 'f3v'
 import { join } from 'node:path'
@@ -84,10 +85,11 @@ const myConfig = {
 
 export default defineConfig(defu(shalottsConfig, myConfig));
 ```
+
 :::
 
-
 ::: details Create `handler.ts` for vavite (its connect vite middleware with fastify app)
+
 ```typescript
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { AppModule, HttpModule } from 'f3v';
@@ -100,16 +102,16 @@ await $sha.create();
 
 let fastifyReadyPromise: PromiseLike<void> | undefined = $sha.app.ready();
 export default async function handler(request: IncomingMessage, reply: ServerResponse) {
-    if (fastifyReadyPromise) {
-        await fastifyReadyPromise;
-        fastifyReadyPromise = undefined;
-    }
+  if (fastifyReadyPromise) {
+    await fastifyReadyPromise;
+    fastifyReadyPromise = undefined;
+  }
 
-    $sha.app.server.emit('request', request, reply);
+  $sha.app.server.emit('request', request, reply);
 }
 ```
-:::
 
+:::
 
 After that you can create file structure like [Vike routing](https://vike.dev/filesystem-routing).
 
@@ -120,7 +122,9 @@ root_dir/
 ├─ index/
 │  ├── +Page.vue
 ```
+
 For config file `+config.h.ts` you can use f3v render functions or config vike-vue
+
 ```typescript
 import type { Config } from 'vike/types'
 import client from './client.ts' // use for browser scripts
@@ -139,7 +143,7 @@ export default {
     },
     description: {
       // Make `description` value available only on the server-side
-      env: { server: true },
+      env: {server: true},
     },
   },
 } satisfies Config;

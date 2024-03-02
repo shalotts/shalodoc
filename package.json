@@ -5,6 +5,7 @@
     "lint": "bunx cspell docs/**/*.md"
   },
   "devDependencies": {
+    "@types/node": "^20.11.24",
     "vite-plugin-pages": "^0.32.0",
     "vite-plugin-pages-sitemap": "^1.6.1",
     "vitepress": "^1.0.0-rc.29",

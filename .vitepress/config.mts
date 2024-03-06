@@ -24,6 +24,18 @@ export default defineConfig({
         appId: process.env.VITE_APP_ID,
         apiKey: process.env.VITE_API_KEY,
         indexName: process.env.VITE_APP_INDEX
+      },
+      miniSearch: {
+        searchOptions: {
+          fuzzy: 0.1,
+          prefix: true,
+          boost: {
+            title: 4,
+            text: 2,
+            titles: 1
+          },
+          combineWith: 'AND'
+        }
       }
     },
     // https://vitepress.dev/reference/default-theme-config

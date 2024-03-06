@@ -17,15 +17,14 @@ export default defineConfig({
       },
       excludes: [],
       exclude: (_, { helpers }): boolean => {
-        if (helpers.idEquals('toc.md'))
-          return true
-        if (helpers.idEquals('index.md'))
-          return true
-
-        return false
+        return helpers.idEquals('toc.md') || helpers.idEquals('index.md');
       },
     }),
     PageProperties(),
-    PagePropertiesMarkdownSection()
+    PagePropertiesMarkdownSection({
+      exclude: (_, { helpers }): boolean => {
+        return helpers.idEquals('toc.md') || helpers.idEquals('index.md');
+      },
+    })
   ]
 })

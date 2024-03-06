@@ -29,22 +29,7 @@ export default {
       threshold:300
     })
 
-    ctx.app.use(NolebaseGitChangelogPlugin, {
-      mapContributors: [
-        {
-          name: 'Neko',
-          avatar: 'https://github.com/nekomeowww.png',
-          nameAliases: ['Neko Ayaka', 'Ayaka Neko'],
-          emailAliases: ['neko@ayaka.moe'],
-        },
-        {
-          name: 'Rizumu',
-          avatar: 'https://github.com/LittleSound.png',
-          nameAliases: ['Rizumu Ayaka', 'Ayaka Rizumu'],
-          emailAliases: ['rizumu@ayaka.moe'],
-        },
-      ],
-    })
+    ctx.app.use(NolebaseGitChangelogPlugin, {})
     ctx.app.use(NolebasePagePropertiesPlugin(),
       {
         properties: {

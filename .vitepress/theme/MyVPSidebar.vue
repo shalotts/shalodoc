@@ -21,8 +21,6 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
   return acc;
 }, []);
 
-console.log(pages.value['/docs/'])
-
 </script>
 
 <template>

@@ -6,6 +6,8 @@ order: 1
 
 # From Authors
 
+Thanks for support ...
+
 ## VitePress
 
 Thanks to [nolebase](https://nolebase.ayaka.io/) contributors for vitepress plugins

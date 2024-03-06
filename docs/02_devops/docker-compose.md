@@ -1,7 +1,7 @@
 ---
 parent: DevOps
 title: Docker Compose API
-order: 1
+order: 2
 ---
 
 # Docker Compose API

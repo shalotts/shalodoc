@@ -1,6 +1,7 @@
 ---
 parent: Introduction
 title: Терминология
+order: 1
 ---
 
 `Виндоус - маздай, линукс форева`

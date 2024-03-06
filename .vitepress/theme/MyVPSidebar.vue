@@ -21,26 +21,29 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
   return acc;
 }, []);
 
+console.log(pages.value['/docs/'])
+
 </script>
 
 <template>
   <div v-if="hasSidebar" class="sidebar">
     <template v-for="(parentKey, parentIndex) in Object.keys(sideBarPages)" :key="parentIndex">
-      <span class="sidebar-menu-parent">
-        # {{ parentKey }}
-      </span>
+      <div class="sidebar-group">
+        <span class="sidebar-menu-parent">
+          # {{ parentKey }}
+        </span>
 
-      <ul>
-        <li v-for="(page, pageIndex) in sideBarPages[parentKey]" :key="pageIndex">
-          <a :href="page.url"
-             :class="{ 'active': page.url === route.path }"
-             class="sidebar-menu-link"
-          >
-            {{ page.frontmatter.title || page.url.split('/').pop().replace('.html', '') }}
-          </a>
-        </li>
-      </ul>
-
+          <ul>
+            <li v-for="(page, pageIndex) in sideBarPages[parentKey]" :key="pageIndex">
+              <a :href="page.url"
+                 :class="{ 'active': page.url === route.path }"
+                 class="sidebar-menu-link"
+              >
+                {{ page.frontmatter.title || page.url.split('/').pop().replace('.html', '') }}
+              </a>
+            </li>
+          </ul>
+      </div>
     </template>
   </div>
 </template>
@@ -67,6 +70,21 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
   overscroll-behavior: contain;
   background: linear-gradient(45deg, var(--vp-c-gray-soft), var(--vp-c-gray-3));
   backdrop-filter: blur(8px);
+}
+
+.sidebar-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.sidebar-group:not(:last-child):after {
+  margin: 0.5em 0;
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--vp-c-default-1);
 }
 
 .sidebar ul {

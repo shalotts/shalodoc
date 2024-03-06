@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     ports:
       - "3010:3000"
+      - "3011:3443"
     environment:
       DB_TYPE: postgres
       DB_HOST: postgresql
@@ -12,12 +13,22 @@ services:
       DB_USER: ${PG_USER}
       DB_PASS: ${PG_PASS}
       DB_NAME: wiki
+      NODE_EXTRA_CA_CERTS: /wiki.pem
     env_file:
       - stack.env
     networks:
       - intra_net
     external_links:
       - postgresql:postgresql
+    volumes:
+      - /var/lib/docker/volumes/wiki_config/_data/config.yml:/wiki/config.yml:ro
+      - node_cert:/wiki.pem
+
+volumes:
+  node_cert:
+    driver: local
+  config:
+    driver: local
 
 networks:
   intra_net:

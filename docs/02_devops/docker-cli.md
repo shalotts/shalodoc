@@ -1,6 +1,7 @@
 ---
 parent: DevOps
 title: Docker CLI Helpers
+order: 1
 ---
 
 # Полезные команды для CLI
@@ -18,7 +19,7 @@ title: Docker CLI Helpers
 Билд с нуля и запуск докера как сервис
 
     docker-compose up --build
-    docker-compose up -d --remove-orphans 
+    docker-compose up -d --remove-orphans
 
 Войти внутрь контейнера с именем php под рутом
 
@@ -28,7 +29,7 @@ title: Docker CLI Helpers
 
 Очистка сетки (если есть конфликты)
 
-    docker network prune 
+    docker network prune
 
 Очистка дубликатов контейнеров (если запускали другой докер)
 
@@ -49,7 +50,7 @@ title: Docker CLI Helpers
 
 Разрешить запись логов (очень часто возникает ошибка с правами)
 
-    sudo chmod -R o+w storage 
+    sudo chmod -R o+w storage
     sudo chmod -R o+w bootstrap
 
 Создание папки кэша (в разных версиях пути могут отличаться)

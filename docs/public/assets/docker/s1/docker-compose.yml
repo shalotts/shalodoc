@@ -39,8 +39,9 @@ services:
     networks:
       - intra_net
 
-  auth_server:
+  authentik:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.2.1}
+    container_name: 'authentik'
     restart: unless-stopped
     command: server
     environment:
@@ -62,6 +63,7 @@ services:
       - redis
     networks:
       - intra_net
+      - authentik
 
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.2.1}
@@ -93,6 +95,16 @@ services:
     networks:
       - intra_net
 
+  tunnel:
+    container_name: s1-cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - authentik
+
 volumes:
   entry_db:
     driver: local
@@ -104,5 +116,7 @@ volumes:
     driver: local
 
 networks:
+  authentik:
+    external: true
   intra_net:
     external: true

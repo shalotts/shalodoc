@@ -1,12 +1,23 @@
-import { createContentLoader, defineConfig, useRoute } from 'vitepress';
+import { defineConfig } from 'vitepress';
 import { fileURLToPath, URL } from 'node:url'
 // https://vitepress.dev/reference/site-config
 
+const githubRepoLink = 'https://github.com/shalotts/shalodoc'
 export default defineConfig({
+  lang: 'ru-RU',
   title: "Shalo.DOCS",
   description: "Shalotts doc",
   cleanUrls: true,
+  ignoreDeadLinks: true,
+  markdown: {
+    lineNumbers: true
+  },
+  lastUpdated: true,
+  sitemap: {
+    hostname: 'https://docs.shalotts.site'
+  },
   themeConfig: {
+    socialLinks: [{ icon: 'github', link: githubRepoLink }],
     search: {
       provider: 'local',
       options: {
@@ -25,10 +36,6 @@ export default defineConfig({
         docFooterText: 'sidebar'
       }
     ],
-
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
-    ]
   },
   appearance: 'force-dark',
   vite: {

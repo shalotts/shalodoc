@@ -6,7 +6,7 @@ import DefaultTheme from 'vitepress/theme'
 const { Layout } = DefaultTheme
 
 // Composables to use
-import { usePages, cleanLink, getPages } from 'vitepress-pages'
+import { usePages } from 'vitepress-pages'
 
 // The way to react to route changes
 import { useRoute } from 'vitepress'

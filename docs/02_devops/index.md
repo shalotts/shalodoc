@@ -1,6 +1,7 @@
 ---
 parent: DevOps
 title: Начало работы
+order: 0
 ---
 
 # DevOps

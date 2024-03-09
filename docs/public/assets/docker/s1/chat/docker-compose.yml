@@ -1,0 +1,55 @@
+version: "3.8"
+services:
+  rocketchat:
+    image: registry.rocket.chat/rocketchat/rocket.chat:4.8.1
+    container_name: rocketchat
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "--eval", "const http = require('http'); const options = {host: '0.0.0.0', port: 1990, timeout: 2000, path:'/health'}; const healthCheck = http.request(options, (res) => {console.log('HEALTHCHECK STATUS:', res.statusCode); if (res.statusCode == 200) {process.exit(0);} else {process.exit(1);}}); healthCheck.on('error', function (err) {console.error('ERROR'); process.exit(1);}); healthCheck.end();"]
+    volumes:
+      - ./data/uploads:/app/uploads
+    env_file:
+      - stack.env
+    environment:
+      MONGO_URL: "mongodb://mongodb:27017/rocketchat?replicaSet=rs0"
+      MONGO_OPLOG_URL: "mongodb://mongodb:27017/local?replicaSet=rs0"
+      ROOT_URL: "http://${ROCKETCHAT_HOST}:3020"
+      PORT: 3020
+    depends_on:
+      - mongodb
+    networks:
+      - intra_net
+      - rocketchat
+
+  tunnel:
+    container_name: chat-cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - rocketchat
+
+  mongodb:
+    image: docker.io/bitnami/mongodb:4.4
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+    volumes:
+      - ./data/db:/bitnami/mongodb
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: rs0
+      MONGODB_PORT_NUMBER: 27017
+      MONGODB_INITIAL_PRIMARY_HOST: mongodb
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: 7017
+      MONGODB_ADVERTISED_HOSTNAME: mongodb
+      MONGODB_ENABLE_JOURNAL: true
+      ALLOW_EMPTY_PASSWORD: yes
+
+networks:
+  rocketchat:
+    external: true
+  intra_net:
+    external: true

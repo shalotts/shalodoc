@@ -2,7 +2,14 @@ version: "3.8"
 services:
   wiki:
     image: ghcr.io/requarks/wiki:2
+    container_name: wiki
     restart: unless-stopped
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1
+      start_period: 15s
+      interval: 15s
+      timeout: 15s
+      retries: 3
     ports:
       - "3010:3000"
       - "3011:3443"
@@ -18,11 +25,22 @@ services:
       - stack.env
     networks:
       - intra_net
+      - wiki
     external_links:
       - postgresql:postgresql
     volumes:
       - /var/lib/docker/volumes/wiki_config/_data/config.yml:/wiki/config.yml:ro
       - node_cert:/wiki.pem
+
+  tunnel:
+    container_name: wiki-cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - wiki
 
 volumes:
   node_cert:
@@ -31,5 +49,7 @@ volumes:
     driver: local
 
 networks:
+  wiki:
+    external: true
   intra_net:
     external: true

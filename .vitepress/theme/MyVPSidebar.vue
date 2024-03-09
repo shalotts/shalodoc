@@ -4,6 +4,7 @@ import { useSidebar } from 'vitepress/theme'
 import { usePages } from 'vitepress-pages'
 import { useRoute } from 'vitepress'
 import { computed } from 'vue'
+import ExpandMenuLi from './component/expand-menu-li.vue'
 
 const { hasSidebar } = useSidebar()
 const route = useRoute()
@@ -24,26 +25,27 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
 </script>
 
 <template>
-  <div v-if="hasSidebar" class="sidebar">
-    <template v-for="(parentKey, parentIndex) in Object.keys(sideBarPages)" :key="parentIndex">
-      <div class="sidebar-group">
-        <span class="sidebar-menu-parent">
-          # {{ parentKey }}
-        </span>
-
-          <ul>
-            <li v-for="(page, pageIndex) in sideBarPages[parentKey]" :key="pageIndex">
-              <a :href="page.url"
-                 :class="{ 'active': page.url === route.path }"
-                 class="sidebar-menu-link"
-              >
-                {{ page.frontmatter.title || page.url.split('/').pop().replace('.html', '') }}
-              </a>
-            </li>
-          </ul>
-      </div>
-    </template>
-  </div>
+  <ul v-if="hasSidebar" class="sidebar">
+    <li v-for="(parentKey, parentIndex) in Object.keys(sideBarPages)"
+        :key="parentIndex"
+        class="sidebar-group"
+    >
+      <expand-menu-li :button-name="parentKey"
+                      class="sidebar-menu-parent"
+      >
+        <ul>
+          <li v-for="(page, pageIndex) in sideBarPages[parentKey]" :key="pageIndex">
+            <a :href="page.url"
+               :class="{ 'active': page.url === route.path }"
+               class="sidebar-menu-link"
+            >
+              {{ page.frontmatter.title || page.url.split('/').pop().replace('.html', '') }}
+            </a>
+          </li>
+        </ul>
+      </expand-menu-li>
+    </li>
+  </ul>
 </template>
 
 <style scoped>
@@ -70,10 +72,18 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
   backdrop-filter: blur(8px);
 }
 
+.sidebar li {
+  margin: 0;
+}
+
 .sidebar-group {
   display: flex;
   flex-direction: column;
   gap: 0.5em;
+}
+
+.sidebar-group ul {
+  margin-top: 5px;
 }
 
 .sidebar-group:not(:last-child):after {
@@ -95,6 +105,16 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
   margin-bottom: 0.5em;
   color: var(--vp-c-danger-1);
 }
+
+.sidebar-menu-parent ul {
+  height: 0;
+  overflow: hidden;
+}
+
+.sidebar-menu-parent ul.group-expanded {
+  height: 100%;
+}
+
 .sidebar-menu-link {
   padding: 5px 10px;
   color: var(--vp-c-text-1);

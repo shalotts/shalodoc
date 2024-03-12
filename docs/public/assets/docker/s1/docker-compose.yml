@@ -10,7 +10,7 @@ services:
       retries: 5
       timeout: 5s
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_USER=${PG_USER:-authentik}
       - POSTGRES_PASSWORD=${PG_PASS}
@@ -22,8 +22,33 @@ services:
     networks:
       - intra_net
 
+  mongodb:
+    image: docker.io/bitnami/mongodb:5.0
+    container_name: mongodb
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/bitnami/mongodb
+    env_file:
+      - stack.env
+    environment:
+      MONGODB_REPLICA_SET_MODE: primary
+      MONGODB_REPLICA_SET_NAME: ${MONGODB_REPLICA_SET_NAME:-rs0}
+      MONGODB_PORT_NUMBER: ${MONGODB_PORT_NUMBER:-27017}
+      MONGODB_INITIAL_PRIMARY_HOST: ${MONGODB_INITIAL_PRIMARY_HOST:-mongodb}
+      MONGODB_INITIAL_PRIMARY_PORT_NUMBER: ${MONGODB_INITIAL_PRIMARY_PORT_NUMBER:-27017}
+      MONGODB_ADVERTISED_HOSTNAME: ${MONGODB_ADVERTISED_HOSTNAME:-mongodb}
+      MONGODB_ENABLE_JOURNAL: ${MONGODB_ENABLE_JOURNAL:-true}
+      ALLOW_EMPTY_PASSWORD: ${ALLOW_EMPTY_PASSWORD:-yes}
+    networks:
+      - intra_net
+
   redis:
     image: redis:alpine
+    container_name: redis
     command: --save 60 1 --loglevel warning
     restart: unless-stopped
     healthcheck:
@@ -67,8 +92,11 @@ services:
 
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.2.1}
+    container_name: 'authentik-worker'
     restart: unless-stopped
     command: worker
+    healthcheck:
+      test: ak healthcheck
     environment:
       AUTHENTIK_REDIS__HOST: redis
       AUTHENTIK_POSTGRESQL__HOST: ${PG_HOST:-postgresql}
@@ -106,6 +134,8 @@ services:
       - authentik
 
 volumes:
+  mongo_data:
+    driver: local
   entry_db:
     driver: local
   postgres:

@@ -34,3 +34,14 @@ order: 2
 переменная `NODE_EXTRA_CA_CERTS` в контейнере wiki
 :::
 
+
+## Docker
+
+::: details assets/docker/s1/wiki/docker-compose.yml
+<<< @/docs/public/assets/docker/s1/wiki/docker-compose.yml
+:::
+
+::: details assets/docker/s1/wiki/env.txt
+<<< @/docs/public/assets/docker/s1/wiki/env.txt
+:::
+

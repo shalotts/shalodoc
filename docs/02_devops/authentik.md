@@ -40,12 +40,13 @@ networks:
   intra_net:
     external: true
 ```
-```yaml
-url: /assets/docker/s1/docker-compose.yml
-```
 
 ::: details assets/docker/s1/docker-compose.yml
 <<< @/docs/public/assets/docker/s1/docker-compose.yml
+:::
+
+::: details /assets/docker/s1/env.txt
+<<< @/docs/public/assets/docker/s1/env.txt
 :::
 
 В данном файле все контейнеры находятся в одной сети, поэтому используем `depends_on:`

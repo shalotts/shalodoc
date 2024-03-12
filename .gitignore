@@ -3,3 +3,5 @@
 .vitepress/dist
 .vitepress/cache
 /.env
+
+.env.protected

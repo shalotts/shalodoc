@@ -116,6 +116,8 @@ const sideBarPages = pages.value['/docs/'].reduce((acc, item) => {
 }
 
 .sidebar-menu-link {
+  width: 100%;
+  display: flex;
   padding: 5px 10px;
   color: var(--vp-c-text-1);
   border-radius: 3px;

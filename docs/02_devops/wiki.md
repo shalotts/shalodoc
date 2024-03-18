@@ -37,6 +37,8 @@ order: 2
 
 ## Docker
 
+Здесь я прописал абсолютный путь до конфига, не получилось навести на файл из local drive.
+Для замещение файла на свой использую моддификатор `:ro`
 ::: details assets/docker/s1/wiki/docker-compose.yml
 <<< @/docs/public/assets/docker/s1/wiki/docker-compose.yml
 :::

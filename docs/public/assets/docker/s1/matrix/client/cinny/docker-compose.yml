@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  cinny:
+    image: ajbura/cinny:${CINNY_TAG:-v3.2.0}
+    container_name: cinny
+    restart: unless-stopped
+    ports:
+      - "3030:80"
+    volumes:
+      - /var/lib/docker/volumes/cinny_data/_data/config.json:/usr/share/nginx/html/config.json:ro
+    networks:
+      - cinny
+      - intra_net
+
+  tunnel:
+    container_name: cinny-cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - cinny
+
+networks:
+  intra_net:
+    external: true
+  cinny:
+    external: true

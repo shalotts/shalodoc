@@ -1,0 +1,73 @@
+server_name: "matrix.shalotts.site"
+pid_file: /data/homeserver.pid
+federation_domain_whitelist:
+  - "matrix.shalotts.site"
+listeners:
+  - port: 8008
+    tls: false
+    type: http
+    x_forwarded: true
+    resources:
+      - names: [client, federation]
+        compress: false
+# Замените ветку database для PGSQL
+database:
+  name: psycopg2
+  txn_limit: 10000
+  args:
+    user: docker
+    password: docker
+    database: synapse
+    host: postgresql
+    port: 5432
+    cp_min: 5
+    cp_max: 10
+#log_config: "/data/example.org.log.config"
+media_store_path: /data/media_store
+registration_shared_secret: "CJIy4auHblE_CuMBoJIbl_80_ieShahba9ahHoh2Nied1gaide6xaip5eeNg4Oogha6ingeThuc"
+report_stats: true
+macaroon_secret_key: "ELLIE_ogHu_CJIy4auHblE_CuMBoJIbl_50_Uengee4Iepu8do"
+form_secret: "u_ELLIE_ogHu_CJIy4auHblE_CuMBoJIbl_50_Oofai0phi6ah"
+#signing_key_path: "/data/example.org.signing.key"
+trusted_key_servers:
+  - server_name: "matrix.org"
+
+# Включает регистрацию, для обладателей почты *@example.org
+enable_registration: true
+enable_registration_without_verification: false
+suppress_key_server_warning: true
+registrations_require_3pid:
+  - email
+#allowed_local_3pids:
+#  - medium: email
+#    pattern: '^[^@]+@example\.org$'
+
+# Выделите почтовый аккаунт для отправки писем пользователям
+email:
+  smtp_host: smtp.gmail.com
+  smtp_port: 25
+  smtp_user: "7info7web@gmail.com"
+  smtp_pass: "jgncgtlphnzblsvb"
+  notif_from: "info@shalotts.site"
+
+oidc_providers:
+  - idp_id: authentik
+    idp_name: authentik
+    discover: true
+    issuer: "https://s1.shalotts.site/application/o/matrix/"
+    client_id: "jI9oOiYXE4m07pEU4WyULahyOkaGRyFQvGCDAmrF"
+    client_secret: "WrIheU2vLGbQDreiBGn1tfEJGCnZeOKgCHbUeizMt46wX1WZAv6WjorsdagRRdaPx9moEAOHKCDI926L0KFMkNo2sGBC9zdul92VvsY2E2OxKlBdrDgoFmr87IgQe4WF"
+    scopes:
+      - "openid"
+      - "profile"
+      - "email"
+    user_mapping_provider:
+      config:
+        localpart_template: "{{ user.preferred_username }}"
+        display_name_template: "{{ user.name|capitalize }}"
+
+# Укажите адрес turn сервера
+turn_uris: [ "turn:coturn?transport=udp", "turn:coturn?transport=tcp" ]
+turn_shared_secret: "u_ELLIE_u_ELLIE_ogHu_CJIy4auHblE_CuMBoJIbl_50_XxxX"
+turn_user_lifetime: 86400000
+turn_allow_guests: True

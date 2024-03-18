@@ -1,0 +1,104 @@
+version: "3.8"
+services:
+  synapse:
+    container_name: synapse
+    image: docker.io/matrixdotorg/synapse
+    restart: always
+    env_file:
+      - stack.env
+    environment:
+      - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+    networks:
+      - intra_net
+      - synapse
+    external_links:
+      - postgresql:postgresql
+    volumes:
+      - synapse_data:/data
+      - /var/lib/docker/volumes/matrix_synapse_data/_data/homeserver.yaml:/data/homeserver.yaml:ro
+    ports:
+      - "8008:8008"
+
+  coturn:
+    container_name: coturn
+    image: coturn/coturn:latest
+    restart: always
+    ports:
+      - "3478:3478/udp" # STUN/TURN UDP
+      - "3478:3478/tcp" # STUN/TURN TCP
+      - "3479:3479/udp" # STUN/TURN UDP Alt port (RFC5780 support)
+      - "3479:3479/tcp" # STUN/TURN TCP Alt port (RFC5780 support)
+      - "5349:5349/udp" # STUN/TURN DTLS
+      - "5349:5349/tcp" # STUN/TURN TLS
+      - "5350:5350/udp" # STUN/TURN DTLS Alt port (RFC5780 support)
+      - "5350:5350/tcp" # STUN/TURN TLS Alt port (RFC5780 support)
+      - "49152:65535/udp" # UDP media ports for TURN relay
+    env_file:
+      - stack.env
+    environment:
+      PORT: 3478
+      ALT_PORT: 3479
+      TLS_PORT: 5349
+      TLS_ALT_PORT: 5350
+      MIN_PORT: 49152
+      MAX_PORT: 65535
+      JSON_CONFIG: '{"config":["no-auth"]}'
+    volumes:
+      - /var/lib/docker/volumes/stun_data/_data/turnserver.conf:/etc/turnserver.conf:ro
+    networks:
+      - frontend
+      - coturn
+      - intra_net
+
+  synapse-admin:
+    container_name: synapse-admin
+    image: awesometechnologies/synapse-admin:latest
+    ports:
+      - "3040:80"
+    restart: unless-stopped
+    networks:
+      - intra_net
+#    build:
+#       args:
+#         - NODE_OPTIONS="--max_old_space_size=1024"
+#         # see #266, PUBLIC_URL must be without surrounding quotation marks
+#         - PUBLIC_URL=/synapse-admin
+#         - REACT_APP_SERVER="https://matrix.example.com"
+
+  coturn-tunnel:
+    container_name: coturn-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TURN_TUNNEL_TOKEN}
+    networks:
+      - coturn
+
+  synapse-tunnel:
+    container_name: synapse-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${SYNAPSE_TUNNEL_TOKEN}
+    networks:
+      - synapse
+
+volumes:
+  synapse_data:
+    driver: local
+
+networks:
+  frontend:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+  synapse:
+    external: true
+  coturn:
+    external: true
+  intra_net:
+    external: true

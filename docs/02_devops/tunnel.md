@@ -1,6 +1,6 @@
 ---
 parent: DevOps
-title: Tunnel
+title: Cloudflared
 order: 2
 ---
 

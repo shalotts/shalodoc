@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  fluffychat:
+    container_name: fluffychat
+    image: fluffychat:1.18.0
+    restart: unless-stopped
+    ports:
+      - "3030:80"
+    env_file:
+      - stack.env
+    environment:
+      TZ: Asia/Aqtobe
+    networks:
+      - fluffychat
+      - intra_net
+
+  tunnel:
+    container_name: fluffychat-cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - fluffychat
+      - intra_net
+
+networks:
+  fluffychat:
+    external: true
+  intra_net:
+    external: true

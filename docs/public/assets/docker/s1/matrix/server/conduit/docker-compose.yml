@@ -1,0 +1,72 @@
+version: "3.8"
+services:
+  conduit:
+    container_name: conduit
+    image: matrixconduit/matrix-conduit:latest
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "6167:6167"
+    deploy:
+      resources:
+        limits:
+          cpus: "4.0"
+          memory: 256M
+    volumes:
+      - conduit_db:/var/lib/matrix-conduit/
+    env_file:
+      - stack.env
+    environment:
+      TZ: Asia/Aqtobe
+      CONDUIT_SERVER_NAME: matrix.shalotts.site # EDIT THIS
+      CONDUIT_DATABASE_PATH: /var/lib/matrix-conduit/
+      CONDUIT_DATABASE_BACKEND: rocksdb
+      CONDUIT_PORT: 6167
+      CONDUIT_MAX_REQUEST_SIZE: 20_000_000 # in bytes, ~20 MB
+      CONDUIT_ALLOW_REGISTRATION: 'true'
+      CONDUIT_ALLOW_FEDERATION: 'false'
+      CONDUIT_ALLOW_CHECK_FOR_UPDATES: 'true'
+      CONDUIT_TRUSTED_SERVERS: '["matrix.org"]'
+      #CONDUIT_MAX_CONCURRENT_REQUESTS: 100
+      #CONDUIT_LOG: warn,rocket=off,_=off,sled=off
+      CONDUIT_ADDRESS: 0.0.0.0
+      CONDUIT_CONFIG: '' # Ignore this
+    networks:
+      - conduit
+      - intra_net
+
+  synapse-admin:
+    container_name: synapse-admin
+    image: awesometechnologies/synapse-admin:latest
+      # args:
+      #   - NODE_OPTIONS="--max_old_space_size=1024"
+      #   # see #266, PUBLIC_URL must be without surrounding quotation marks
+      #   - PUBLIC_URL=/synapse-admin
+      #   - REACT_APP_SERVER="https://matrix.example.com"
+    ports:
+      - "3040:80"
+    restart: unless-stopped
+    networks:
+      - intra_net
+
+  tunnel:
+    container_name: conduit-cloudflared-tunnel
+    image: cloudflare/cloudflared
+    restart: unless-stopped
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    networks:
+      - conduit
+      - intra_net
+
+volumes:
+  conduit_db:
+    driver: local
+
+networks:
+  conduit:
+    external: true
+  intra_net:
+    external: true

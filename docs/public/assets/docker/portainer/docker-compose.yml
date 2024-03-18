@@ -1,4 +1,4 @@
-version: "3.4"
+version: "3.8"
 services:
   agent:
     image: portainer/agent
@@ -11,7 +11,7 @@ services:
     container_name: portainer
     command: -H tcp://agent:9001 --tlsskipverify
     environment:
-      - TZ=Europe/Moscow
+      - TZ=Asia/Aqtobe
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /opt/portainer/portainer_data:/data

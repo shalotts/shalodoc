@@ -41,14 +41,6 @@ networks:
     external: true
 ```
 
-::: details assets/docker/s1/docker-compose.yml
-<<< @/docs/public/assets/docker/s1/docker-compose.yml
-:::
-
-::: details /assets/docker/s1/env.txt
-<<< @/docs/public/assets/docker/s1/env.txt
-:::
-
 В данном файле все контейнеры находятся в одной сети, поэтому используем `depends_on:`
 
 Когда будем делать другой стэк, будем уже использовать
@@ -57,3 +49,24 @@ networks:
     external_links:
       - postgresql:postgresql
 ```
+
+Создайте новые стэк в окружение portainer agent под названием `intra`. Перейдите в редактор и
+поместите код докер компоуз, и содержимое env файла (при редактировании переменных окружения
+выберите advanced)
+
+::: details assets/docker/s1/docker-compose.yml
+<<< @/docs/public/assets/docker/s1/docker-compose.yml
+:::
+
+- `TUNNEL_TOKEN` можно почитать в [cloudflared](/docs/02_devops/tunnel)
+- `AUTHENTIK_SECRET_KEY` можно создать утилитой `pwgen` или `openssl`. Описано в [ориг. доке](https://docs.goauthentik.io/docs/installation/docker-compose#preparation)
+- прикрепление почты и связка gmail почты с доменом cloudflare, описано пошагово в [комментариях](https://community.cloudflare.com/t/solved-how-to-use-gmail-smtp-to-send-from-an-email-address-which-uses-cloudflare-email-routing/382769)
+::: details /assets/docker/s1/env.txt
+<<< @/docs/public/assets/docker/s1/env.txt
+:::
+
+## Восстановление пароля
+
+<iframe loading="lazy" width="420" height="240" src="https://www.youtube.com/embed/NKJkYz0BIlA"
+title="Authentik
+- Password Recovery Flow Setup" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

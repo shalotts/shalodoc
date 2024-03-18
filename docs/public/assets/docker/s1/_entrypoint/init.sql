@@ -1,0 +1,7 @@
+CREATE ROLE docker LOGIN PASSWORD 'docker';
+ALTER USER docker CREATEDB;
+
+CREATE DATABASE intra OWNER docker;
+CREATE DATABASE wiki OWNER docker;
+CREATE DATABASE synapse OWNER docker LOCALE 'C' TEMPLATE 'template0';
+

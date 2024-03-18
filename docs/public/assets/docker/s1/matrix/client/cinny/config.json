@@ -1,0 +1,12 @@
+{
+  "defaultHomeserver": 0,
+  "homeserverList": [
+    "matrix.shalotts.site"
+  ],
+  "allowCustomHomeservers": false,
+
+  "hashRouter": {
+    "enabled": false,
+    "basename": "/"
+  }
+}

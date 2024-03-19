@@ -65,7 +65,7 @@ networks:
 <<< @/docs/public/assets/docker/s1/env.txt
 :::
 
-## Восстановление пароля
+## Как добавить нормальную авторизацию и кнопку "Восстановление пароля"
 
 <iframe loading="lazy" width="420" height="240" src="https://www.youtube.com/embed/NKJkYz0BIlA"
 title="Authentik

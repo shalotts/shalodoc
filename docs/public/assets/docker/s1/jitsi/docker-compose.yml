@@ -319,6 +319,7 @@ services:
     # Focus component
     jicofo:
         image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-stable-9258}
+        container_name: jicofo
         restart: unless-stopped
         ports:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
@@ -465,7 +466,7 @@ services:
           - meet.jitsi
 
     jitsi_openid:
-      container_name: itsi_openid
+      container_name: jitsi_openid
       image: ghcr.io/marcelcoding/jitsi-openid:latest
       restart: always
       env_file:

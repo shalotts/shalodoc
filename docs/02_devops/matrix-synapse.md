@@ -34,12 +34,28 @@ wget https://res.cloudinary.com/dr5gcup5n/raw/upload/v1710842088/shalodoc/ohyp12
 
 Основу конфига я брал из [хабра](https://habr.com/ru/articles/739814/)
 
-А вообще оригинальный конфиг можно взять из [документации](https://matrix-org.github.io/synapse/latest/usage/configuration/homeserver_sample_config.html)
+Оригинальный конфиг можно взять из [документации](https://matrix-org.github.io/synapse/latest/usage/configuration/homeserver_sample_config.html)
+
+Или лучше сгенирировать, перейдите в контейнер `synapse` и выполните команду
+
+В поле `federation_domain_whitelist` укажите сразу свои matrix сервера. Если хотите полностью
+выключить федерацию, то уберите `federation` из `listeners`.
+
+Поле `allowed_local_3pids` позволяет добавлять белый список для регистрации пользователей со своим
+доменом.
 
 
-## А как создать админа?
+```shell
+python -m synapse.app.homeserver --config-path <CONFIG> --generate-config
+```
 
-Я рекомендую самый простой, это создать пользователя через веб-клиент, а затем присвоить ему
+При создании конфига через команду, секретные ключи сгенерируются сами.
+
+## Как создать админа?
+
+Самый просто зайти в `synapse` и выполнить [команду](https://matrix-org.github.io/synapse/latest/setup/installation.html?highlight=registration_shared_secret#registering-a-user)
+
+Второй способ. Создать пользователя через веб-клиент, а затем присвоить ему
 права в [базе данных](https://matrix-org.github.io/synapse/latest/usage/administration/admin_api/index.html#authenticate-as-a-server-admin).
 
 ```shell
